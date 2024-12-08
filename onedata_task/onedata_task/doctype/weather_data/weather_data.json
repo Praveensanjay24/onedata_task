@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-08 21:14:55.215201",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "city",
+  "temperature",
+  "weather_description",
+  "observation_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Data",
+   "label": "Temperature"
+  },
+  {
+   "fieldname": "weather_description",
+   "fieldtype": "Data",
+   "label": "Weather Description"
+  },
+  {
+   "fieldname": "observation_time",
+   "fieldtype": "Data",
+   "label": "Observation Time"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-12-08 21:14:55.215201",
+ "modified_by": "Administrator",
+ "module": "Onedata Task",
+ "name": "Weather Data",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

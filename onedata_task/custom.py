@@ -1,5 +1,6 @@
 import json
 import frappe
+import requests
 
 @frappe.whitelist()
 def bulk_convert_leads(leads):
@@ -35,3 +36,43 @@ def bulk_convert_leads(leads):
 			frappe.log_error(f"Error converting lead {lead_name}: {str(e)}", "Bulk Convert Leads")
 
 	return {"converted_leads": converted}
+
+
+
+@frappe.whitelist()
+def get_weather_data(city):
+	api_key = "ce763d199c8393fbd37a8171a4985b30"
+	if not api_key:
+		frappe.throw("Weatherstack API key is not configured.")
+
+	url = f"http://api.weatherstack.com/current"
+	params = {
+		"access_key": api_key,
+		"query": city
+	}
+
+	try:
+		response = requests.get(url, params=params)
+		response.raise_for_status()
+		data = response.json()
+
+		if 'error' in data:
+			frappe.throw(data['error'].get('info', 'An error occurred while fetching weather data.'))
+
+		current = data.get("current", {})
+		temperature = current.get("temperature")
+		weather_desc = current.get("weather_descriptions", [])[0] if current.get("weather_descriptions") else ""
+		observation_time = current.get("observation_time")
+
+		weather_doc = frappe.new_doc("Weather Data")
+		weather_doc.city = city
+		weather_doc.temperature = temperature
+		weather_doc.weather_description = weather_desc
+		weather_doc.observation_time = observation_time
+		weather_doc.insert(ignore_permissions=True)
+
+		return {"message": "Weather data saved successfully.", "data": weather_doc.as_dict()}
+
+	except requests.exceptions.RequestException as e:
+		frappe.log_error(message=str(e), title="Weatherstack API Error")
+		frappe.throw("Failed to fetch weather data. Please try again later.")
